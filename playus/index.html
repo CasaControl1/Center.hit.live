@@ -38,7 +38,7 @@ function cropRegion(frame,r,outW=600,outH=230){
  g.drawImage(frame,frame.width*r.x,frame.height*r.y,frame.width*r.w,frame.height*r.h,pad,pad,outW-2*pad,outH-2*pad);
  g.filter='none';return out;
 }
-function parseDigits(t){return (t.match(/\\b\\d{1,2}\\b/g)||[]).filter(v=>Number(v)<=99)}
+function parseDigits(t){return (t.match(/\b\d{1,2}\b/g)||[]).filter(v=>Number(v)<=99)}
 async function recognizeRegion(frame,roi){
  let image=cropRegion(frame,roi);
  let res=await worker.recognize(image,{}, {text:true});
@@ -51,7 +51,7 @@ async function scan(frame){
  const cellText=[];
  if(scanCount%3===1||lastCells.every(v=>v==='–')){
    for(let i=0;i<4;i++){
-     const value=await recognizeRegion(frame,ROI.cells[i]);cellText.push(value.replace(/\\s+/g,' ').trim());
+     const value=await recognizeRegion(frame,ROI.cells[i]);cellText.push(value.replace(/\s+/g,' ').trim());
      const nums=parseDigits(value);
      if(nums.length===1)lastCells[i]=nums[0]; // do not overwrite valid values with noise
    }
